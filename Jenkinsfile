@@ -6,7 +6,7 @@ node {
   sh './mvnw package -DskipTests'
 
   stage('UnitTest') {
-    if(env.BRANCH_NAME == "development") {
+    if(env.BRANCH_NAME == "dev") {
         sh './mvnw test'
     }
   }
@@ -30,7 +30,7 @@ node {
       docker.build("${SERVICE_NAME}:${GIT_COMMIT}")
 
       docker.withRegistry('https://145053809521.dkr.ecr.eu-west-1.amazonaws.com', 'ecr:eu-west-1:aws-dev-cred') {
-        docker.image('${SERVICE_NAME}').push('latest')
+        docker.image("${SERVICE_NAME}").push('latest')
       }
 
     }
