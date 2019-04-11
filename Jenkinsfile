@@ -1,6 +1,6 @@
 node {
   stage 'Checkout'
-  git 'ssh://git@github.com:suayipozmen/spring-petclinic.git'
+  git 'https://github.com/suayipozmen/spring-petclinic.git'
  
   stage 'Docker build'
   docker.build('petclinic')
