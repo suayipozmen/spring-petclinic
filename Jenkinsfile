@@ -1,7 +1,10 @@
 node {
   stage 'Checkout'
   checkout scm
- 
+
+  stage 'Build package'
+  sh 'unset MAVEN_CONFIG && ./mvnw package -DskipTests'
+
   stage 'Docker build'
   docker.build('petclinic')
  
