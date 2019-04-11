@@ -1,4 +1,7 @@
 node {
+  def SERVICE_NAME
+
+
   stage 'Checkout'
   checkout scm
 
@@ -15,7 +18,7 @@ node {
     if(env.BRANCH_NAME == "development" || env.BRANCH_NAME == "test" || env.BRANCH_NAME == "master" ) {
       def GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
 
-      def SERVICE_NAME = "petclinic-development"
+      SERVICE_NAME = "petclinic-development"
 
       if (env.BRANCH_NAME == 'test') {
           SERVICE_NAME = "petclinic-test"
@@ -24,7 +27,6 @@ node {
       if (env.BRANCH_NAME == 'master') {
           SERVICE_NAME = "petclinic-production"
       }
-
 
 
       def app = docker.build("${SERVICE_NAME}:${GIT_COMMIT}")
@@ -38,7 +40,5 @@ node {
   }
 
   stage 'deploy'
-  if (env.BRANCH_NAME == 'master') {
-    sh "aws ecs update-service --cluster petclinic-dev --service petclinic-service --region eu-west-1 --force-new-deployment"
-  }
+    sh "aws ecs update-service --cluster ${SERVICE_NAME} --service petclinic-service --region eu-west-1 --force-new-deployment"
 }
