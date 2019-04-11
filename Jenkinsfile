@@ -4,6 +4,9 @@ node {
 
   stage 'Build package'
   println "${BRANCH_NAME}"
+  if(BRANCH_NAME.equals("development")){
+     println "dev branch sozmen"
+  }
   sh 'unset MAVEN_CONFIG && ./mvnw package -DskipTests'
 
   stage 'Docker build'
