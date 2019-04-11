@@ -3,7 +3,7 @@ node {
   checkout scm
 
   stage 'Build package'
-  println("BRANCH_NAME is "+env.BRANCH_NAME)
+  println "${BRANCH_NAME}"
   sh 'unset MAVEN_CONFIG && ./mvnw package -DskipTests'
 
   stage 'Docker build'
