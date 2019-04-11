@@ -1,6 +1,6 @@
 node {
   stage 'Checkout'
-  git 'https://github.com/suayipozmen/spring-petclinic.git'
+  checkout scm
  
   stage 'Docker build'
   docker.build('petclinic')
