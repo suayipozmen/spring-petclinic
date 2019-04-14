@@ -39,6 +39,18 @@ node {
     }
   }
 
-  stage 'deploy'
+  stage('deploy'){
     sh "aws ecs update-service --cluster ${SERVICE_NAME} --service petclinic-service --region eu-west-1 --force-new-deployment"
+  }
+  
+  stage("FunctionalTest"){
+    if(env.BRANCH_NAME == "test" ) {
+      echo("Testinium functional tests TEST environment");
+      testiniumExecution failOnTimeout: true, planId: 2979, projectId: 1659, timeoutSeconds: 600
+    } else if(env.BRANCH_NAME == "master") {
+      echo("Testinium functional tests PROD environment");
+      testiniumExecution failOnTimeout: true, planId: 3028, projectId: 1659, timeoutSeconds: 600       
+    }
+  }
+  
 }
