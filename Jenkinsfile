@@ -28,7 +28,6 @@ node {
           SERVICE_NAME = "petclinic-production"
       }
 
-
       def app = docker.build("${SERVICE_NAME}:${GIT_COMMIT}")
 
       docker.withRegistry('https://145053809521.dkr.ecr.eu-west-1.amazonaws.com', 'ecr:eu-west-1:aws-dev-cred') {
