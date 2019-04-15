@@ -9,7 +9,7 @@ node {
   sh './mvnw package -DskipTests'
 
   stage('UnitTest') {
-    if(env.BRANCH_NAME == "dev") {
+    if(env.BRANCH_NAME == "development" || env.BRANCH_NAME == "test") {
         sh './mvnw test'
     }
   }
