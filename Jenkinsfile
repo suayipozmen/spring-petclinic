@@ -51,7 +51,7 @@ node {
         branch 'master'
       }
       steps {
-        input message: ''Tests are ok?', ok: 'Deploy to Production'
+        input message: 'Tests are ok?', ok: 'Deploy to Production'
         sh "aws ecs update-service --cluster ${SERVICE_NAME} --service petclinic-service --region eu-west-1 --force-new-deployment"
         sh "aws ecs wait services-stable --cluster ${SERVICE_NAME} --services petclinic-service --region eu-west-1 "
       }
