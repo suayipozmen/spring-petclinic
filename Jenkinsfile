@@ -39,10 +39,24 @@ node {
     }
   }
 
-  stage('deploy'){
-    sh "aws ecs update-service --cluster ${SERVICE_NAME} --service petclinic-service --region eu-west-1 --force-new-deployment"
-    sh "aws ecs wait services-stable --cluster ${SERVICE_NAME} --services petclinic-service --region eu-west-1 "
+  stage('Deploy') {
+    if(env.BRANCH_NAME == "development" || env.BRANCH_NAME == "test") {
+      sh "aws ecs update-service --cluster ${SERVICE_NAME} --service petclinic-service --region eu-west-1 --force-new-deployment"
+      sh "aws ecs wait services-stable --cluster ${SERVICE_NAME} --services petclinic-service --region eu-west-1 "
+    }
   }
+
+  stage('Deploy To Prod'){
+      when {
+        branch 'master'
+      }
+      steps {
+        input message: ''Tests are ok?', ok: 'Deploy to Production'
+        sh "aws ecs update-service --cluster ${SERVICE_NAME} --service petclinic-service --region eu-west-1 --force-new-deployment"
+        sh "aws ecs wait services-stable --cluster ${SERVICE_NAME} --services petclinic-service --region eu-west-1 "
+      }
+
+    }
   
   stage("FunctionalTest"){
     if(env.BRANCH_NAME == "test" ) {
